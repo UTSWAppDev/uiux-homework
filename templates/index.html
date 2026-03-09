@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block page_title %}Cardiovascular Disease Risk Calculators{% endblock %}
+
+{% block page_subtitle %}
+<p>Evidence-based tools for estimating 10-year cardiovascular risk</p>
+{% endblock %}
+
+{% block content %}
+
+<section class="intro-section">
+    <h2>About This Application</h2>
+    <p>
+        This application provides two validated cardiovascular disease (CVD) risk calculators
+        used in clinical practice. These tools estimate an individual's probability of
+        experiencing a major cardiovascular event — such as a heart attack or stroke — over
+        the next 10 years.
+    </p>
+    <p>
+        Risk calculators are important clinical decision-support tools. They help guide
+        conversations between patients and their healthcare providers about preventive
+        strategies, including lifestyle modifications and medications such as statins.
+    </p>
+</section>
+
+<section class="calculators-section">
+    <h2>Available Calculators</h2>
+
+    <div class="calculator-cards">
+
+        <div class="calculator-card">
+            <h3>ASCVD Risk Calculator</h3>
+            <p>
+                The Atherosclerotic Cardiovascular Disease (ASCVD) risk calculator uses the
+                <strong>Pooled Cohort Equations (PCE)</strong>, developed jointly by the
+                American College of Cardiology (ACC) and the American Heart Association (AHA)
+                in 2013.
+            </p>
+            <p>
+                This calculator estimates the 10-year risk of a first ASCVD event (non-fatal
+                myocardial infarction, coronary heart disease death, or fatal or non-fatal
+                stroke) for patients aged 40&ndash;79 years.
+            </p>
+            <ul>
+                <li>Validated for White and African American adults</li>
+                <li>Age range: 40&ndash;79 years</li>
+                <li>Inputs: age, sex, race, cholesterol levels, blood pressure, smoking status, diabetes</li>
+            </ul>
+            <a href="{{ url_for('ascvd') }}" class="btn btn-primary">Open ASCVD Calculator</a>
+        </div>
+
+        <div class="calculator-card">
+            <h3>PREVENT Calculator</h3>
+            <p>
+                The <strong>Predicting Risk of Cardiovascular Disease EVENTs (PREVENT)</strong>
+                equations were published by the American Heart Association in 2023 as an
+                updated, race-free replacement for the Pooled Cohort Equations.
+            </p>
+            <p>
+                PREVENT improves on prior models by including kidney function (eGFR), covering
+                a broader age range (30&ndash;79 years), and removing race as a variable,
+                making it applicable to all adult patients.
+            </p>
+            <ul>
+                <li>Applies to adults regardless of race or ethnicity</li>
+                <li>Age range: 30&ndash;79 years</li>
+                <li>Inputs: age, sex, cholesterol, blood pressure, smoking, diabetes, kidney function (eGFR)</li>
+            </ul>
+            <a href="{{ url_for('prevent') }}" class="btn btn-primary">Open PREVENT Calculator</a>
+        </div>
+
+    </div>
+</section>
+
+<section class="references-section">
+    <h2>References</h2>
+    <ul>
+        <li>
+            Goff DC Jr, Lloyd-Jones DM, Bennett G, et al. 2013 ACC/AHA Guideline on the
+            Assessment of Cardiovascular Risk: A Report of the American College of
+            Cardiology/American Heart Association Task Force on Practice Guidelines.
+            <em>J Am Coll Cardiol.</em> 2014;63(25 Pt B):2935&ndash;2959.
+        </li>
+        <li>
+            Khan SS, Matsushita K, Sang Y, et al. Development and Validation of the American
+            Heart Association's PREVENT Equations.
+            <em>Circulation.</em> 2024;149:430&ndash;449.
+        </li>
+    </ul>
+</section>
+
+<section class="disclaimer-section">
+    <h2>Disclaimer</h2>
+    <p>
+        <strong>For educational purposes only.</strong>  This application is intended for use
+        in the UT Southwestern Master of Science in Health Informatics program to demonstrate
+        application development and UI/UX design concepts.  It should not be used for actual
+        clinical decision-making.  Always consult a qualified healthcare provider for
+        personalized medical advice.
+    </p>
+</section>
+
+{% endblock %}

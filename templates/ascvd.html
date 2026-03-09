@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}ASCVD Risk Calculator{% endblock %}
+
+{% block page_title %}ASCVD Risk Calculator{% endblock %}
+
+{% block page_subtitle %}
+<p>10-year atherosclerotic cardiovascular disease risk using the Pooled Cohort Equations (ACC/AHA 2013)</p>
+{% endblock %}
+
+{% block content %}
+
+<section class="calculator-info-section">
+    <h2>About the ASCVD Calculator</h2>
+    <p>
+        The Pooled Cohort Equations (PCE) estimate the 10-year risk of a first
+        atherosclerotic cardiovascular disease (ASCVD) event — defined as non-fatal
+        myocardial infarction, coronary heart disease death, or fatal or non-fatal stroke.
+    </p>
+    <p>
+        This calculator is intended for patients aged <strong>40–79 years</strong> who have
+        not previously been diagnosed with cardiovascular disease.
+        It was derived and validated specifically for <strong>White</strong> and
+        <strong>African American</strong> adults.
+    </p>
+</section>
+
+<section class="calculator-form-section">
+    <h2>Enter Patient Information</h2>
+
+    {% if error %}
+    <div class="error-message" role="alert">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('ascvd') }}" novalidate>
+
+        <div class="form-group">
+            <label for="age">Age (years) <span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="number" id="age" name="age" min="40" max="79" required
+                   value="{{ form_data.get('age', '') }}"
+                   aria-describedby="age-hint">
+            <span id="age-hint" class="field-hint">Must be between 40 and 79</span>
+        </div>
+
+        <div class="form-group">
+            <label for="sex">Biological Sex <span class="required-mark" aria-hidden="true">*</span></label>
+            <select id="sex" name="sex" required>
+                <option value="" disabled {% if not form_data.get('sex') %}selected{% endif %}>-- Select --</option>
+                <option value="female" {% if form_data.get('sex') == 'female' %}selected{% endif %}>Female</option>
+                <option value="male"   {% if form_data.get('sex') == 'male'   %}selected{% endif %}>Male</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="race">Race <span class="required-mark" aria-hidden="true">*</span></label>
+            <select id="race" name="race" required>
+                <option value="" disabled {% if not form_data.get('race') %}selected{% endif %}>-- Select --</option>
+                <option value="white" {% if form_data.get('race') == 'white' %}selected{% endif %}>White</option>
+                <option value="aa"    {% if form_data.get('race') == 'aa'    %}selected{% endif %}>African American</option>
+            </select>
+            <span class="field-hint">The PCE was validated for White and African American adults only.</span>
+        </div>
+
+        <div class="form-group">
+            <label for="total_cholesterol">Total Cholesterol (mg/dL) <span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="number" id="total_cholesterol" name="total_cholesterol"
+                   min="100" max="400" step="1" required
+                   value="{{ form_data.get('total_cholesterol', '') }}">
+        </div>
+
+        <div class="form-group">
+            <label for="hdl_cholesterol">HDL Cholesterol (mg/dL) <span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="number" id="hdl_cholesterol" name="hdl_cholesterol"
+                   min="20" max="100" step="1" required
+                   value="{{ form_data.get('hdl_cholesterol', '') }}">
+        </div>
+
+        <div class="form-group">
+            <label for="systolic_bp">Systolic Blood Pressure (mmHg) <span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="number" id="systolic_bp" name="systolic_bp"
+                   min="90" max="200" step="1" required
+                   value="{{ form_data.get('systolic_bp', '') }}">
+        </div>
+
+        <fieldset class="form-group">
+            <legend>Blood Pressure Treatment <span class="required-mark" aria-hidden="true">*</span></legend>
+            <label class="radio-label">
+                <input type="radio" name="bp_treatment" value="yes"
+                       {% if form_data.get('bp_treatment') == 'yes' %}checked{% endif %}>
+                Yes — currently taking antihypertensive medication
+            </label>
+            <label class="radio-label">
+                <input type="radio" name="bp_treatment" value="no"
+                       {% if form_data.get('bp_treatment') == 'no' or not form_data.get('bp_treatment') %}checked{% endif %}>
+                No — not on antihypertensive medication
+            </label>
+        </fieldset>
+
+        <fieldset class="form-group">
+            <legend>Diabetes <span class="required-mark" aria-hidden="true">*</span></legend>
+            <label class="radio-label">
+                <input type="radio" name="diabetes" value="yes"
+                       {% if form_data.get('diabetes') == 'yes' %}checked{% endif %}>
+                Yes
+            </label>
+            <label class="radio-label">
+                <input type="radio" name="diabetes" value="no"
+                       {% if form_data.get('diabetes') == 'no' or not form_data.get('diabetes') %}checked{% endif %}>
+                No
+            </label>
+        </fieldset>
+
+        <fieldset class="form-group">
+            <legend>Current Smoker <span class="required-mark" aria-hidden="true">*</span></legend>
+            <label class="radio-label">
+                <input type="radio" name="smoker" value="yes"
+                       {% if form_data.get('smoker') == 'yes' %}checked{% endif %}>
+                Yes
+            </label>
+            <label class="radio-label">
+                <input type="radio" name="smoker" value="no"
+                       {% if form_data.get('smoker') == 'no' or not form_data.get('smoker') %}checked{% endif %}>
+                No
+            </label>
+        </fieldset>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Calculate ASCVD Risk</button>
+            <a href="{{ url_for('ascvd') }}" class="btn btn-secondary">Clear Form</a>
+        </div>
+
+    </form>
+</section>
+
+{% if result %}
+<section class="result-section">
+    <h2>Results</h2>
+    <div class="result-box">
+        <p class="result-risk-value {% if result.risk_category == 'High' %}risk-high{% elif result.risk_category == 'Intermediate' %}risk-intermediate{% else %}risk-low{% endif %}">
+            10-Year ASCVD Risk: {{ result.risk_percent }}%
+        </p>
+        <p class="result-category">
+            Risk Category: <strong>{{ result.risk_category }}</strong>
+        </p>
+        <div class="result-interpretation">
+            {% if result.risk_category == 'Low' %}
+            <p>A 10-year ASCVD risk &lt;5% is considered <strong>low</strong>. Lifestyle counseling is appropriate.</p>
+            {% elif result.risk_category == 'Borderline' %}
+            <p>A 10-year ASCVD risk of 5–7.5% is considered <strong>borderline</strong>. Discuss risk-enhancing factors with your healthcare provider.</p>
+            {% elif result.risk_category == 'Intermediate' %}
+            <p>A 10-year ASCVD risk of 7.5–20% is considered <strong>intermediate</strong>. Statin therapy may be recommended.</p>
+            {% else %}
+            <p>A 10-year ASCVD risk &ge;20% is considered <strong>high</strong>. High-intensity statin therapy is generally recommended.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

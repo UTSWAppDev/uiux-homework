@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CVD Risk Calculators{% endblock %} | UTSW Health Informatics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-brand">CVD Risk Calculators</a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('ascvd') }}">ASCVD Calculator</a></li>
+                <li><a href="{{ url_for('prevent') }}">PREVENT Calculator</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="header-container">
+            <h1>{% block page_title %}CVD Risk Calculators{% endblock %}</h1>
+            {% block page_subtitle %}<p></p>{% endblock %}
+        </div>
+    </header>
+
+    <main>
+        <div class="main-container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <p>UT Southwestern Medical Center &mdash; Master of Science in Health Informatics</p>
+            <p>These calculators are for educational purposes only and should not be used for clinical decision-making.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

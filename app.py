@@ -11,6 +11,7 @@ so that students can progressively apply styling as part of the exercise.
 """
 
 import math
+import os
 
 from flask import Flask, render_template, request
 
@@ -215,6 +216,8 @@ def calculate_prevent(age, sex, total_cholesterol, hdl_cholesterol,
     sbp_c = (systolic_bp - 130.0) / 20.0
     non_hdl_c = (non_hdl - 130.0) / 30.0
     hdl_c = (hdl_cholesterol - 45.0) / 15.0
+    # Floor at 15 mL/min/1.73 m² (Stage 5 CKD threshold) to avoid log(0) and
+    # to reflect that risk estimates are not reliable below this value.
     egfr_ln = math.log(max(egfr, 15.0))
     egfr_c = (egfr_ln - math.log(90.0)) / 0.1
 
@@ -334,4 +337,7 @@ def prevent():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Enable debug mode via environment variable rather than hard-coding True,
+    # so the app does not expose the Werkzeug debugger in unintended environments.
+    debug = os.environ.get("FLASK_DEBUG", "false").lower() in ("1", "true", "yes")
+    app.run(debug=debug)

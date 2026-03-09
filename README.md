@@ -32,7 +32,7 @@ four steps below.
 2. **Start the application:**
 
    ```bash
-   python app.py
+   flask --app app run --debug
    ```
 
 3. **Open your browser** and navigate to `http://127.0.0.1:5000`

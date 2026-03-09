@@ -16,30 +16,17 @@ four steps below.
 
 ## Getting Started
 
-### Prerequisites
-
-- Python 3.8 or higher
-- `pip` (Python package installer)
-
-### Installation
-
-1. **Install dependencies:**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Start the application:**
+1. **Start the application:**
 
    ```bash
    flask --app app run --debug
    ```
 
-3. **Open your browser** and navigate to `http://127.0.0.1:5000`
+2. **Open the app in your browser** either when prompted in the bottom right, or by clicking on the Globe icon in the `PORTS` tab below
 
-Take a moment to click through the application.  Notice that it is functional but
-difficult to use — the forms are hard to read, navigation is not obvious, and the
-results are not visually distinct.  Over the next four steps you will fix this.
+Take a moment to click through the application.  Try the two risk calculators.<br>
+Notice that it is functional but difficult to use — the forms are hard to read, navigation is not obvious, and the results are not visually distinct.<br>
+Over the next four steps you will fix this.
 
 > **All CSS changes are made in `static/css/style.css`.**
 > Add each step's CSS to the file and refresh your browser to see the changes.
